@@ -9,10 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartBtn = document.getElementById('restartBtn');
     const scoreElement = document.getElementById('score');
     const highScoreElement = document.getElementById('highScore');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedValue = document.getElementById('speedValue');
     
     // 游戏配置
     const gridSize = 20; // 网格大小
-    const gameSpeed = 150; // 游戏速度（毫秒）
+    let gameSpeed = 150; // 游戏速度（毫秒），默认中等速度
+    
+    // 速度配置
+    const speedSettings = {
+        1: { speed: 200, text: '慢速', description: '适合初学者' },
+        2: { speed: 150, text: '中等', description: '标准难度' },
+        3: { speed: 100, text: '快速', description: '挑战模式' }
+    };
     
     // 游戏状态
     let snake = [];
@@ -81,6 +90,37 @@ document.addEventListener('DOMContentLoaded', () => {
             // 启动动画循环
             lastFrameTime = performance.now();
             requestAnimationFrame(draw);
+        }
+    }
+    
+    // 更新游戏速度
+    function updateGameSpeed(speedLevel) {
+        const setting = speedSettings[speedLevel];
+        gameSpeed = setting.speed;
+        speedValue.textContent = setting.text;
+        
+        // 更新速度描述
+        const descriptionElement = document.querySelector('.speed-description');
+        if (descriptionElement) {
+            descriptionElement.textContent = setting.description;
+            
+            // 添加动画效果
+            descriptionElement.style.animation = 'none';
+            setTimeout(() => {
+                descriptionElement.style.animation = 'fadeIn 0.5s ease-in-out';
+            }, 10);
+        }
+        
+        // 如果游戏正在运行，需要重新设置定时器
+        if (gameInterval && !isPaused) {
+            clearInterval(gameInterval);
+            gameInterval = setInterval(gameLoop, gameSpeed);
+            
+            // 添加视觉反馈
+            const canvas = document.getElementById('gameCanvas');
+            canvas.classList.remove('speed-change');
+            void canvas.offsetWidth; // 触发重绘
+            canvas.classList.add('speed-change');
         }
     }
     
@@ -570,10 +610,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 按钮事件监听
+    // 事件监听
     startBtn.addEventListener('click', startGame);
     pauseBtn.addEventListener('click', pauseGame);
     restartBtn.addEventListener('click', restartGame);
+    
+    // 速度滑块事件监听
+    speedSlider.addEventListener('input', function() {
+        updateGameSpeed(this.value);
+    });
+    
+    // 初始化速度设置
+    updateGameSpeed(speedSlider.value);
     
     // 移动端触摸控制
     let touchStartX = 0;

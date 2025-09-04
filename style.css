@@ -124,9 +124,12 @@ h1::after {
 #gameCanvas {
     background-color: #e8f5e9;
     background-image: 
-        linear-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+        linear-gradient(rgba(76, 175, 80, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(76, 175, 80, 0.3) 1px, transparent 1px),
+        linear-gradient(45deg, rgba(76, 175, 80, 0.05) 25%, transparent 25%, transparent 75%, rgba(76, 175, 80, 0.05) 75%),
+        linear-gradient(45deg, rgba(76, 175, 80, 0.05) 25%, transparent 25%, transparent 75%, rgba(76, 175, 80, 0.05) 75%);
+    background-size: 20px 20px, 20px 20px, 40px 40px, 40px 40px;
+    background-position: 0 0, 0 0, 0 0, 20px 20px;
     border: 3px solid #4CAF50;
     border-radius: 10px;
     display: block;
@@ -156,6 +159,87 @@ h1::after {
     justify-content: center;
     gap: 15px;
     flex-wrap: wrap;
+}
+
+.speed-control {
+    margin-top: 20px;
+    text-align: center;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.speed-description {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #388E3C;
+    font-style: italic;
+    height: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes speedChange {
+    0% { box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); }
+    50% { box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.3); }
+    100% { box-shadow: 0 0 0 2px rgba(76, 175, 80, 0); }
+}
+
+.speed-change {
+    animation: speedChange 0.5s ease-out;
+}
+
+.speed-control label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2E7D32;
+}
+
+#speedSlider {
+    width: 80%;
+    margin: 0 auto;
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #8BC34A, #4CAF50, #2E7D32);
+    outline: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+#speedSlider:hover {
+    opacity: 1;
+}
+
+#speedSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#speedSlider::-webkit-slider-thumb:hover {
+    background: #2E7D32;
+    transform: scale(1.1);
+}
+
+.speed-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 10px auto 0;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 button {
